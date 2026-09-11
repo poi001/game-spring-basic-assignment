@@ -16,7 +16,7 @@ Spring Boot + JPA + MySQL(Docker)로 구현한 "붉은 달의 성채" 게임 저
 - 400: 요청 본문이 API 명세의 필드 제약(`@Valid`)을 어긴 경우
 - 404: 존재하지 않는 `gameId`를 요청한 경우 (`GameService.findGame()`에서 발생)
 
-전체 요청/응답 필드는 [API 문서](https://f-api.github.io/game-spring-api-docs/basic/api-docs.html)를 따릅니다.
+요청/응답 필드 상세: [API 문서](https://f-api.github.io/game-spring-api-docs/basic/api-docs.html)
 
 ## ERD
 
