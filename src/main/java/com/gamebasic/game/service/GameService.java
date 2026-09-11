@@ -1,9 +1,6 @@
 package com.gamebasic.game.service;
 
-import com.gamebasic.game.dto.CreateRequest;
-import com.gamebasic.game.dto.GameDetailResponse;
-import com.gamebasic.game.dto.GameSummaryResponse;
-import com.gamebasic.game.dto.ProgressRequest;
+import com.gamebasic.game.dto.*;
 import com.gamebasic.game.entity.Game;
 import com.gamebasic.game.repository.GameRepository;
 import com.gamebasic.runcard.dto.CardResponse;
@@ -133,5 +130,17 @@ public class GameService {
      }
 
     // TODO (Lv 8): 플레이어 이름 변경 — 변경 감지로 수정
+    @Transactional
+    public void renameGame(Long gameId, RenameRequest request) {
+        Game game = findGame(gameId);
+        game.rename(request.getPlayerName());
+    }
     // TODO (Lv 8): 게임 삭제
+    @Transactional
+    public void deleteGame(Long gameId) {
+        Game game = findGame(gameId);
+        runCardRepository.deleteAllByGame(game);
+        gameRepository.delete(game);
+    }
+
 }
