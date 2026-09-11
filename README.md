@@ -4,14 +4,17 @@ Spring Boot + JPA + MySQL(Docker)로 구현한 "붉은 달의 성채" 게임 저
 
 ## API 명세
 
-| 메서드 | 경로 | 설명 | 성공 응답 |
-| --- | --- | --- | --- |
-| POST | `/games` | 게임과 시작 덱 생성 | 201 |
-| GET | `/games` | 게임 요약 목록 조회 (id 내림차순) | 200 |
-| GET | `/games/{gameId}` | 게임 상세와 전체 덱 조회 | 200 |
-| PUT | `/games/{gameId}/progress` | 진행 필드와 전체 덱 저장 | 200 |
-| PATCH | `/games/{gameId}` | 플레이어 이름 변경 | 204 |
-| DELETE | `/games/{gameId}` | 게임과 덱 삭제 | 204 |
+| 메서드 | 경로 | 설명 | 성공 | 실패 |
+| --- | --- | --- | --- | --- |
+| POST | `/games` | 게임과 시작 덱 생성 | 201 | 400 |
+| GET | `/games` | 게임 요약 목록 조회 (id 내림차순) | 200 | - |
+| GET | `/games/{gameId}` | 게임 상세와 전체 덱 조회 | 200 | 404 |
+| PUT | `/games/{gameId}/progress` | 진행 필드와 전체 덱 저장 | 200 | 400, 404 |
+| PATCH | `/games/{gameId}` | 플레이어 이름 변경 | 204 | 400, 404 |
+| DELETE | `/games/{gameId}` | 게임과 덱 삭제 | 204 | 404 |
+
+- 400: 요청 본문이 API 명세의 필드 제약(`@Valid`)을 어긴 경우
+- 404: 존재하지 않는 `gameId`를 요청한 경우 (`GameService.findGame()`에서 발생)
 
 전체 요청/응답 필드는 [API 문서](https://f-api.github.io/game-spring-api-docs/basic/api-docs.html)를 따릅니다.
 
@@ -54,7 +57,7 @@ spring.datasource.password=root1234
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
-spring.jpa.hibernate.ddl-auto=create
+spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 ```
