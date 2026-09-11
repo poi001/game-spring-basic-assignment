@@ -1,6 +1,26 @@
 # Crimson Citadel — 게임 서버 과제
 
-Spring Boot + JPA + MySQL(Docker)로 구현한 "붉은 달의 성채" 게임 저장 서버입니다.
+Spring Boot + JPA + MySQL(Docker)로 구현한 "붉은 달의 성채" 게임 저장 서버입니다. 전투 계산, 적 배치, 보상과 층 전이는 게임 클라이언트가 담당하고, 서버는 게임과 덱을 저장·조회하는 CRUD API를 제공합니다.
+
+## API 명세
+
+| 메서드 | 경로 | 설명 | 성공 응답 |
+| --- | --- | --- | --- |
+| POST | `/games` | 게임과 시작 덱 생성 | 201 |
+| GET | `/games` | 게임 요약 목록 조회 (id 내림차순) | 200 |
+| GET | `/games/{gameId}` | 게임 상세와 전체 덱 조회 | 200 |
+| PUT | `/games/{gameId}/progress` | 진행 필드와 전체 덱 저장 | 200 |
+| PATCH | `/games/{gameId}` | 플레이어 이름 변경 | 204 |
+| DELETE | `/games/{gameId}` | 게임과 덱 삭제 | 204 |
+
+전체 요청/응답 필드는 [API 문서](https://f-api.github.io/game-spring-api-docs/basic/api-docs.html)를 따릅니다.
+
+## ERD
+
+![ERD](docs/images/erd.png)
+
+- `Game` 1 : `RunCard` N 관계이며, 참조는 `RunCard → Game` **단방향**입니다. (`Game`은 `RunCard` 목록을 필드로 가지지 않음)
+- `RunCard`는 항상 `Game`을 통해서만 조회·저장·삭제되며, `Game`에는 cascade나 양방향 컬렉션을 두지 않습니다. 게임 삭제 시 자식(`RunCard`)을 먼저 삭제한 뒤 부모(`Game`)를 삭제합니다.
 
 ## 실행 방법
 
